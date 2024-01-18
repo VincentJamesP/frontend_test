@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
@@ -13,17 +13,18 @@ import Controls from "./controls";
 import Modal from "./modal";
 
 import { User } from "./types/user";
+import { useUserContext } from "./context/user-context";
 
 export type GalleryProps = {
   users: User[];
 };
-const Gallery = ({ users }: GalleryProps) => {
-  const [usersList, setUsersList] = useState(users);
+const Gallery = () => {
+  const { users } = useUserContext();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = (id: number) => {
-    const user = usersList.find((item) => item.id === id) || null;
+    const user = users.find((item) => item.id === id) || null;
 
     if (user) {
       setSelectedUser(user);
@@ -43,7 +44,7 @@ const Gallery = ({ users }: GalleryProps) => {
         <Controls />
       </div>
       <div className="items">
-        {usersList.map((user, index) => (
+        {users.map((user, index) => (
           <div
             className="item user-card"
             key={index}
